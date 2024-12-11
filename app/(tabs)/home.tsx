@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -11,16 +11,14 @@ import VideoCart from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
 
 const Home = () => {
-  const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  console.log(user);
-  
+  const { user } = useGlobalContext();
 
   const {data: posts, refetch} = useFetchData('/videos/all', {
     headers: {
       authorization: `Bearer ${user.token}`
     }
   })
-  const {data: latestPosts} = useFetchData('/videos/latest', {
+  const {data: latestPosts, refetch: refetchLatest} = useFetchData('/videos/latest', {
     headers: {
       authorization: `Bearer ${user.token}`
     }
@@ -32,6 +30,7 @@ const Home = () => {
   const onRefresh = async () => {
     setRefreshing(true)
     await refetch()
+    await refetchLatest()
     setRefreshing(false)
   }
 
@@ -52,7 +51,7 @@ const Home = () => {
                     Welcome Back,
                   </Text>
                   <Text className='text-2xl font-psemibold text-white'>
-                    {user?.name || 'Emanuel'}
+                    {user?.name}
                   </Text>
                 </View>
 
@@ -67,7 +66,7 @@ const Home = () => {
 
               <SearchInput />
 
-              <View className='w-full flex-1 pt-5 pb-8'>
+              <View className='w-full flex pt-5 pb-8'>
                 <Text className='text-gray-100 text-lg font-pregular mb-3'>
                   Latest Videos
                 </Text>

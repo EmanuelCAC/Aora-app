@@ -74,9 +74,7 @@ const Create = () => {
       formData.append('prompt', formRef.current.prompt)
       formData.append('creatorId', user.id)
 
-      console.log(formData)
-
-      const { data } = await axios.post(`http://192.168.100.106:3333/videos/new`,
+      const { data } = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/videos/new`,
         formData,
         {
           headers: {

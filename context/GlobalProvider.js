@@ -14,7 +14,7 @@ const GlobalProvider = ({ children }) => {
       .then((res) => {
         if(res) {
           setIsLoggedIn(true)
-          setUser(res)
+          setUser(JSON.parse(res))
         } else {
           setIsLoggedIn(false)
           setUser(null)

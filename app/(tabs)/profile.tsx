@@ -15,13 +15,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  const {data: posts } = useFetchData('http://google.com')
+  const { data: posts } = useFetchData('/videos/all', {
+    where:
+    {
+      creatorId: user.id
+    }
+  })
 
   const logout = async () => {
     try {
-      await AsyncStorage.clear()
-
+      setUser(null)
+      setIsLoggedIn(false)
       router.replace('/sign-in')
+
+      await AsyncStorage.clear()
     } catch (error: any) {
       Alert.alert("Error", error.message)
     } 

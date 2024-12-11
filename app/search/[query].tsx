@@ -12,7 +12,7 @@ import { useLocalSearchParams } from 'expo-router'
 
 const Search = () => {
   const { query } = useLocalSearchParams()
-  const {data: posts, refetch, isLoading} = useFetchData('http://google.com')
+  const {data: posts, refetch, isLoading} = useFetchData(`${process.env.EXPO_PUBLIC_API_URL}`)
 
   const [search, setSearch] = useState()
   

@@ -34,12 +34,11 @@ const SignUp = () => {
     setIsSubmitting(true)
 
     try {
-      const { data } = await axios.post(`http://192.168.100.106:3333/auth/signup`,
+      const { data } = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/auth/signup`,
         {
           name: formRef.current.username,
           email: formRef.current.email,
-          password: formRef.current.password,
-          avatar: "https://res.cloudinary.com/duheudj5m/image/upload/v1733785827/twp9qcahnicfykuaizo7.png"
+          password: formRef.current.password
         }
       )
       

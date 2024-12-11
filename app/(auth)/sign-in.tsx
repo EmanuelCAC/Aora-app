@@ -33,7 +33,7 @@ const SignIn = () => {
     setIsSubmitting(true)
 
     try {
-      const { data } = await axios.post(`http://192.168.100.106:3333/auth/signin`, {
+      const { data } = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/auth/signin`, {
         email: formRef.current.email,
         password: formRef.current.password,
       })
