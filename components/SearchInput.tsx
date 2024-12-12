@@ -10,6 +10,15 @@ const SearchInput = ({ initialQuery }: any) => {
   const [isFocused, setIsFocused] = useState(false)
   const router = useRouter()
 
+  const search = () => {
+    if(!query) {
+      Alert.alert('Missing query', "Please input something to search results across database")
+    }
+
+    if(pathname.startsWith('/search')) router.setParams({ query })
+    else router.push(`/search/${query}`)
+  }
+
 
   return (
       <View className={`border-2 ${isFocused ? 'border-secondary' : 'border-black-200'} w-full h-16 px-4 bg-black-100 rounded-2xl items-center flex-row space-x-4`}>
@@ -21,17 +30,11 @@ const SearchInput = ({ initialQuery }: any) => {
           onChangeText={(e) => setQuery(e)}
           onBlur={() => setIsFocused(false)}
           onFocus={() => setIsFocused(true)}
+          onSubmitEditing={() => search()}
         />
 
         <TouchableOpacity
-          onPress={() => {
-            if(!query) {
-              Alert.alert('Missing query', "Please input something to search results across database")
-            }
-
-            if(pathname.startsWith('/search')) router.setParams({ query })
-            else router.push(`/search/${query}`)
-          }}
+          onPress={() => search()}
         >
           <Image
             source={icons.search}

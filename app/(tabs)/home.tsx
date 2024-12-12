@@ -6,25 +6,17 @@ import { images } from '@/constants'
 import SearchInput from '@/components/SearchInput'
 import Trending from '@/components/Trending'
 import EmptyState from '@/components/EmptyState'
-import useFetchData from '@/lib/FetchData'
+import useFetchData from '@/lib/UseAPI'
 import VideoCart from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
+import { getAllPosts, getLatestPosts } from '@/lib/APIFunctions'
 
 const Home = () => {
   const { user } = useGlobalContext();
 
-  const {data: posts, refetch} = useFetchData('/videos/all', {
-    headers: {
-      authorization: `Bearer ${user.token}`
-    }
-  })
-  const {data: latestPosts, refetch: refetchLatest} = useFetchData('/videos/latest', {
-    headers: {
-      authorization: `Bearer ${user.token}`
-    }
-  })
+  const {data: posts, refetch} = useFetchData(() => getAllPosts(user.token))
+  const {data: latestPosts, refetch: refetchLatest} = useFetchData(() => getLatestPosts(user.token))
 
-  const [search, setSearch] = useState()
   const [refreshing, setRefreshing] = useState(false)
 
   const onRefresh = async () => {

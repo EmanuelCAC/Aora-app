@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Text, View, Image, Pressable, ViewStyle } from "react-native"
 
 interface CreatorProps {
-  username: string
+  name: string
   avatar: string
 }
 
@@ -26,7 +26,7 @@ const videoStyle: ViewStyle = {
   overflow: "hidden",
 };
 
-const VideoCart = ({ video: {title, thumbnail, video, creator: {username, avatar}} }: VideoProps) => {
+const VideoCart = ({ video: {title, thumbnail, video, creator: {name, avatar}} }: VideoProps) => {
   const [pressed, setPressed] = useState(false)
   const [play, setPlay] = useState(false) 
 
@@ -47,7 +47,7 @@ const VideoCart = ({ video: {title, thumbnail, video, creator: {username, avatar
               {title}
             </Text>
             <Text className="text-xs text-gray-100 font-pregular" numberOfLines={1}>
-              {username}
+              {name}
             </Text>
           </View>
         </View>

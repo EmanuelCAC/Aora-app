@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { images } from '@/constants'
 import SearchInput from '@/components/SearchInput'
-import Trending from '@/components/Trending'
 import EmptyState from '@/components/EmptyState'
-import useFetchData from '@/lib/FetchData'
+import useFetchData from '@/lib/UseAPI'
 import VideoCart from '@/components/VideoCard'
 import { useLocalSearchParams } from 'expo-router'
+import { useGlobalContext } from '@/context/GlobalProvider'
+import { searchPosts } from '@/lib/APIFunctions'
 
 const Search = () => {
+  const { user } = useGlobalContext();
   const { query } = useLocalSearchParams()
-  const {data: posts, refetch, isLoading} = useFetchData(`${process.env.EXPO_PUBLIC_API_URL}`)
-
-  const [search, setSearch] = useState()
+  const {data: posts, refetch, isLoading} = useFetchData(() => searchPosts(query as string, user.token))
   
   useEffect(() => {
     refetch()

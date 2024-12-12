@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { icons } from '@/constants'
 import EmptyState from '@/components/EmptyState'
-import useFetchData from '@/lib/FetchData'
+import useFetchData from '@/lib/UseAPI'
 import VideoCart from '@/components/VideoCard'
 import InfoBox from '@/components/InfoBox'
 import { router } from 'expo-router'
@@ -12,15 +12,11 @@ import { router } from 'expo-router'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import { TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getAllPosts } from '@/lib/APIFunctions'
 
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  const { data: posts } = useFetchData('/videos/all', {
-    where:
-    {
-      creatorId: user.id
-    }
-  })
+  const { data: posts } = useFetchData(() => getAllPosts(user.token))
 
   const logout = async () => {
     try {
@@ -62,26 +58,29 @@ const Profile = () => {
                 resizeMode='cover'
               />
             </View>
-            <InfoBox
-                title={user?.name}
-                containerStyles='mt-5'
-                titleStyles="text-lg"
-              />
-              
-              <View className="mt-5 flex-row">
-                <InfoBox
-                  title={posts.length || 0}
-                  subtitle="Posts"
-                  containerStyles='mr-10'
-                  titleStyles="text-xl"
-                />
 
-                <InfoBox
-                  title="1.2k"
-                  subtitle="Followers"
-                  titleStyles="text-xl"
-                />
-              </View>
+            <InfoBox
+              title={user?.name}
+              subtitle={user?.email}
+              containerStyles='mt-5'
+              titleStyles="text-lg"
+            />
+
+              
+            <View className="mt-5 flex-row">
+              <InfoBox
+                title={posts.length || 0}
+                subtitle="Posts"
+                containerStyles='mr-10'
+                titleStyles="text-xl"
+              />
+
+              <InfoBox
+                title="1.2k"
+                subtitle="Followers"
+                titleStyles="text-xl"
+              />
+            </View>
           </View>
         )
         }
