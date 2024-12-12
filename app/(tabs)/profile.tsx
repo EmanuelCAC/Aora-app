@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Alert, FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -12,11 +12,19 @@ import { router } from 'expo-router'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import { TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getAllPosts } from '@/lib/APIFunctions'
+import { getUserPosts } from '@/lib/APIFunctions'
 
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  const { data: posts } = useFetchData(() => getAllPosts(user.token))
+  const { data: posts, refetch } = useFetchData(() => getUserPosts(user.token, user.id))
+
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await refetch()
+    setRefreshing(false)
+  }
 
   const logout = async () => {
     try {
@@ -36,7 +44,7 @@ const Profile = () => {
         data={posts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <VideoCart video={item} />
+          <VideoCart video={item as any} />
         )}
         ListHeaderComponent={() => (
           <View className="w-full justify-center items-center mt-6 mb-12 px-4">
@@ -90,6 +98,7 @@ const Profile = () => {
             subtitle="No videos found for this search query"
           />
         )}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
        />
     </SafeAreaView>
   )
