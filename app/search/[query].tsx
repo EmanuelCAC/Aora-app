@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
+import { useEffect, useState } from 'react'
+import { FlatList, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import SearchInput from '@/components/SearchInput'
@@ -14,6 +14,14 @@ const Search = () => {
   const { user } = useGlobalContext();
   const { query } = useLocalSearchParams()
   const {data: posts, refetch, isLoading} = useFetchData(() => searchPosts(query as string, user.token))
+
+  const [refreshing, setRefreshing] = useState(false)
+  
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await refetch()
+    setRefreshing(false)
+  }
   
   useEffect(() => {
     refetch()
@@ -25,7 +33,7 @@ const Search = () => {
         data={posts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <VideoCart video={item} />
+          <VideoCart video={item as any} />
         )}
         ListHeaderComponent={() => {
           return (
@@ -49,6 +57,7 @@ const Search = () => {
             subtitle="No videos found for this search query"
           />
         )}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
        />
     </SafeAreaView>
   )

@@ -44,7 +44,7 @@ const Profile = () => {
         data={posts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <VideoCart video={item as any} />
+          <VideoCart video={{removable: true, ...item} as any} refeach={() => {refetch()}}/>
         )}
         ListHeaderComponent={() => (
           <View className="w-full justify-center items-center mt-6 mb-12 px-4">

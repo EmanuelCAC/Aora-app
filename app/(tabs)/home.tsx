@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -32,7 +32,7 @@ const Home = () => {
         data={posts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <VideoCart video={item} />
+          <VideoCart video={item as any} />
         )}
         ListHeaderComponent={() => {
           return (

@@ -1,4 +1,6 @@
 import { icons } from "@/constants"
+import { useGlobalContext } from "@/context/GlobalProvider"
+import { removePost } from "@/lib/APIFunctions"
 import { ResizeMode, Video } from "expo-av"
 import { useState } from "react"
 import { Text, View, Image, Pressable, ViewStyle } from "react-native"
@@ -14,8 +16,10 @@ interface VideoProps {
     title: string
     thumbnail: string
     video: string
+    removable: boolean
     creator: CreatorProps
-  }
+  },
+  refeach?: () => void
 }
 
 const videoStyle: ViewStyle = {
@@ -26,13 +30,17 @@ const videoStyle: ViewStyle = {
   overflow: "hidden",
 };
 
-const VideoCart = ({ video: {title, thumbnail, video, creator: {name, avatar}} }: VideoProps) => {
+const VideoCart = ({ video: {id, title, thumbnail, video, removable=false, creator: {name, avatar}}, refeach = () => {} }: VideoProps) => {
   const [pressed, setPressed] = useState(false)
-  const [play, setPlay] = useState(false) 
-
+  const [play, setPlay] = useState(false)
+  const [dropdown, setDropdown] = useState(false)
+  const [save, setSave] = useState(false)
+  const [remove, setRemove] = useState(false)
+  const { user } = useGlobalContext()
+  
   return (
     <View className="flex-col items-center px-4 mb-14">
-      <View className="flex-row gap-3 items-start">
+      <View className="flex-row gap-3 items-start z-10">
         <View className="justify-center items-center flex-row flex-1">
           <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
             <Image
@@ -51,12 +59,61 @@ const VideoCart = ({ video: {title, thumbnail, video, creator: {name, avatar}} }
             </Text>
           </View>
         </View>
-        <View className="pt-2">
-          <Image
-            source={icons.menu}
-            className="w-5 h-5"
-            resizeMode="contain"
-          />
+        <View className="pt-2 relative">
+          <Pressable
+            onPress={() => setDropdown(!dropdown)}
+          >
+            <Image
+              source={icons.menu}
+              className="w-5 h-5"
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          {dropdown && (
+            <View className="absolute right-0 top-9 bg-black-200 w-32 rounded-lg z-20">
+              <Pressable
+                className={`flex-row items-center gap-2 pt-3 pb-3 px-5 w-full rounded-t-lg ${save && 'bg-gray-600'}`}
+                onPressIn={() => {
+                  setSave(true)
+                }}
+                onPressOut={() => {
+                  setSave(false)
+                }}
+                onPress={() => {
+                  
+                }}
+                >
+                <Image
+                  source={icons.bookmark}
+                  className="w-3 h-3"
+                  resizeMode="contain"
+                />
+                <Text className="text-gray-100 font-pregular text-sm">Save</Text>
+              </Pressable>
+              {removable && (
+                <Pressable className={`flex-row items-center gap-1 pb-3 pt-1 px-5 w-full rounded-b-lg ${remove && 'bg-gray-600'}`}
+                  onPressIn={() => {
+                    setRemove(true)
+                  }}
+                  onPressOut={() => {
+                    setRemove(false)
+                  }}
+                  onPress={async () => {
+                    await removePost(id, user.token)
+                    refeach()
+                  }}
+                >
+                  <Image
+                    source={icons.trashcan}
+                    className="w-4 h-4"
+                    resizeMode="contain"
+                  />
+                  <Text className="text-gray-100 font-pregular text-sm">Delete</Text>
+                </Pressable>
+              )}
+            </View>
+          )}
         </View>
       </View>
 

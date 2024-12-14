@@ -59,3 +59,17 @@ export const searchPosts = async (query: string, token: string) => {
     throw error
   }
 }
+
+export const removePost = async (id: number, token: string) => {
+  try {
+    await axios.delete(process.env.EXPO_PUBLIC_API_URL + '/videos/remove/' + id,
+      {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }    
+    )
+  } catch (error) {
+    throw error
+  }
+}

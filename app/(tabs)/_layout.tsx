@@ -1,10 +1,10 @@
 import React from 'react'
-import { Tabs, Redirect } from 'expo-router'
+import { Tabs } from 'expo-router'
 import { Text, View, Image } from 'react-native'
 
 import { icons } from '../../constants'
 
-const TabIcon = ({ icon, color, name, focused }) => {
+const TabIcon = ({ icon, color, name, focused }: any) => {
   return (
     <View className='items-center justify-center gap-2'>
       <Image
