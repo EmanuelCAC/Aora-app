@@ -73,3 +73,52 @@ export const removePost = async (id: number, token: string) => {
     throw error
   }
 }
+
+export const savePost = async (videoId: number, userId: number, token: string) => {
+  try {
+    await axios.post(process.env.EXPO_PUBLIC_API_URL + '/bookmark/save',
+      {
+        videoId,
+        userId,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }    
+    )
+  } catch (error) {
+    throw error
+  }
+}
+
+export const unsavePost = async (id: number, token: string) => {
+  try {
+    await axios.delete(process.env.EXPO_PUBLIC_API_URL + '/bookmark/unsave/' + id,
+      {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }    
+    )
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getSavedPosts = async (id: number, token: string) => {
+  try {
+    const { data } = await axios.get(process.env.EXPO_PUBLIC_API_URL + '/bookmark/all/' + id,
+      {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }    
+    )
+
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
