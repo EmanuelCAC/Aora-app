@@ -1,6 +1,6 @@
 import { icons } from "@/constants"
 import { useGlobalContext } from "@/context/GlobalProvider"
-import { removePost } from "@/lib/APIFunctions"
+import { removePost, savePost } from "@/lib/APIFunctions"
 import { ResizeMode, Video } from "expo-av"
 import { useState } from "react"
 import { Text, View, Image, Pressable, ViewStyle } from "react-native"
@@ -73,15 +73,16 @@ const VideoCart = ({ video: {id, title, thumbnail, video, removable=false, creat
           {dropdown && (
             <View className="absolute right-0 top-9 bg-black-200 w-32 rounded-lg z-20">
               <Pressable
-                className={`flex-row items-center gap-2 pt-3 pb-3 px-5 w-full rounded-t-lg ${save && 'bg-gray-600'}`}
+                className={`flex-row items-center gap-2 pt-3 pb-3 px-5 w-full rounded-t-lg ${save && 'bg-gray-600'} ${!removable && 'rounded-b-lg'}`}
                 onPressIn={() => {
                   setSave(true)
                 }}
                 onPressOut={() => {
                   setSave(false)
+                  setDropdown(false)
                 }}
                 onPress={() => {
-                  
+                  savePost(id, user.id, user.token)
                 }}
                 >
                 <Image
@@ -98,6 +99,7 @@ const VideoCart = ({ video: {id, title, thumbnail, video, removable=false, creat
                   }}
                   onPressOut={() => {
                     setRemove(false)
+                    setDropdown(false)
                   }}
                   onPress={async () => {
                     await removePost(id, user.token)
