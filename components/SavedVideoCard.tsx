@@ -41,10 +41,10 @@ const SavedVideoCart = ({id: videoId, video: {id, title, thumbnail, video, creat
     <View className="flex-col items-center px-4 mb-14">
       <View className="flex-row gap-3 items-start z-10">
         <View className="justify-center items-center flex-row flex-1">
-          <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
+          <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center">
             <Image
               source={{uri: avatar}}
-              className="w-full h-full rounded-lg"
+              className="w-[100%] h-[100%] rounded-[0.42rem]"
               resizeMode="cover"
             />
           </View>

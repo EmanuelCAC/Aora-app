@@ -42,10 +42,10 @@ const VideoCart = ({ video: {id, title, thumbnail, video, removable=false, creat
     <View className="flex-col items-center px-4 mb-14">
       <View className="flex-row gap-3 items-start z-10">
         <View className="justify-center items-center flex-row flex-1">
-          <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
+          <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center">
             <Image
               source={{uri: avatar}}
-              className="w-full h-full rounded-lg"
+              className="w-[100%] h-[100%] rounded-[0.42rem]"
               resizeMode="cover"
             />
           </View>
@@ -93,7 +93,7 @@ const VideoCart = ({ video: {id, title, thumbnail, video, removable=false, creat
                 <Text className="text-gray-100 font-pregular text-sm">Save</Text>
               </Pressable>
               {removable && (
-                <Pressable className={`flex-row items-center gap-1 pb-3 pt-1 px-5 w-full rounded-b-lg ${remove && 'bg-gray-600'}`}
+                <Pressable className={`flex-row gap-1 pb-3 pt-1 px-5 w-full rounded-b-lg ${remove && 'bg-gray-600'}`}
                   onPressIn={() => {
                     setRemove(true)
                   }}
@@ -108,7 +108,7 @@ const VideoCart = ({ video: {id, title, thumbnail, video, removable=false, creat
                 >
                   <Image
                     source={icons.trashcan}
-                    className="w-4 h-4"
+                    className="w-4 h-4 -ml-0.5"
                     resizeMode="contain"
                   />
                   <Text className="text-gray-100 font-pregular text-sm">Delete</Text>
